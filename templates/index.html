@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>question list</title>
+</head>
+<body>
+{% if latest_question_list %}
+    <ul>
+    {% for question in latest_question_list %}
+        <!--
+           使用命名空间 url 地址
+        -->
+        <li><a href="{% url 'pollapp:detail' question_id %}">{{ question.question_text }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are avaliable</p>
+{% endif %}
+</body>
+</html>
