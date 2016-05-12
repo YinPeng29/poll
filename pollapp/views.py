@@ -1,9 +1,9 @@
 #-*-coding:utf-8-*-
 
-from django.shortcuts import render
 from django.http import HttpResponse,Http404,HttpResponseRedirect
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404,render
 from .models import Question,choice
+from django.core.urlresolvers import reverse
 
 def index(request):
     latest_question_list=Question.objects.order_by('-pub_date')[:5]
@@ -16,6 +16,7 @@ def detail(request,question_id):
     return render(request,'detail.html',{'question':question})
 
 def results(request,question_id):
+    question = get_object_or_404(Question)
     response = 'you are looking at the results of question %s'
     return HttpResponse(response%question_id)
 
@@ -36,5 +37,6 @@ def vote(request,question_id):
     else:
         selected_choice.votes+=1
         selected_choice.save()
-        return HttpResponseRedirect(reversed('pollapp:results',args=(p.id,)))
+        #reverse()反向解析 url 'pollapps:results' 找到对应的url地址args传递id形成最终的地址
+        return HttpResponseRedirect(reverse('pollapps:results',args=(p.id,)))
 
